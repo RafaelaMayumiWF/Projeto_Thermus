@@ -1,59 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calculadora Thermus</title>
 </head>
 <body>
     <h1>Calculadora financeira da Thermus</h1>
-    <p>Nós da Thermus buscamos proporcionar uma solução que evite prejuízos devido a formação de orvalho nos acervos. <br> </p>
-    <p>Esta ferramenta busca mostrar aos nossos futuros clientes o quando eles vão gastar e economizar com a nossa solução para seus acervos.</p>
-    <p style="font-weight: bold;">Antes disso, precisamos coletar alguns dados... no caso são:</p>
+    <p>Nós da Thermus buscamos proporcionar uma solução que evite prejuízos devido à formação de orvalho nos acervos, a qual pode prejudicar suas obras. <br> </p>
+    <p>Esta ferramenta busca mostrar aos nossos futuros clientes o quanto eles vão gastar e prevenir perdas com a nossa solução para seus acervos.</p>
+    <p style="font-weight: bold;">Antes disso, precisamos coletar alguns dados... No caso, são:</p>
     <p>Qual a quantidade estimada de quadros em seu acervo?</p>
     <input type="text" name="" id="qntdPintura">
     <p>Quantas vitrines fechadas você tem?</p>
     <input type="text" name="" id="vitrines">
-    <p>Qual a area total em M² da sua instituição?</p>
+    <p>Qual a área total em m² da sua instituição?</p>
     <input type="text" name="" id="area">
-    <p>Insira a tarifa por Kh/h de sua região:</p>
+    <p>Insira a tarifa por kWh (use "." para separar as casas decimais) de sua região:</p>
     <input type="text" name="" id="Kwh">
     <button onclick="calcFinance()">Calculadora financeira</button>
     <h3 id="Placeholder1"></h3>
-    <p id="Fonte"></p>
     <p id="Placeholder2"></p>
+    <p id="Fonte"></p>
 </body>
 </html>
 <script>
     function calcFinance(){
-        let qtdSensores = (Number(area.value) / 35 ) + Number(vitrines.value)
+        let qtdSensores = ((Number(area.value) / 35 ) + Number(vitrines.value)) + 1
         let custoEletrico  = ((qtdSensores * 0.005 ) * 720) * Number(Kwh.value)
         const placas = qtdSensores
-        Placeholder1.innerHTML = `Seus gastos com restauros de quadros somente pode chegar a: R$${Number(qntdPintura.value)* 1250},00 com restaurações apenas, esse numero pode ser muito maior se levar esculturas e escrituras em conta! Sem contar que existem danos sem a opção reparos em quadros.`
-        Fonte.innerHTML = "Isso deve por conta da média do custo de restaurações de quadros, que esta entre R$500,00 e R$2000,00 para obras pequenas segundo a revista Oeste Geral. Obras grandes podem vir a custar até 6 mil segundo a gravuracontemporanea.com"
-        Placeholder2.innerHTML = `Nossos sensores vão custar: R$${Math.ceil((Number(qtdSensores) * 25) * 1.5 )},00.</br> Você estará pagando R$${25 * 1.5},00 por cada sensor e ${qtdSensores.toFixed(0)} serão instalados.</br> E serão necessárias ${placas.toFixed(0)} placas de controle(Arduino), que sera um gasto adicional de R$${Math.ceil((qtdSensores * 30) *1.15)},00. Custando R$${30 * 1.15},00 por cada placa
-        </br> E os custos para operar vai ser de R$${Math.ceil(custoEletrico)},00 por mês, bem pouco né? Isso é por conta de nossos sensores gastarem apenas 0.005 Kh/h!(Gasto dos controladores não incluso devido a volatilidade do consumo que flutua de acordo com a frequência em que você, cliente, deseja fazer as medições)</br>
-        Já a instalação, sera um gasto de R$${Math.ceil(qtdSensores * 7)},00.
-        </br> (quantidade de sensores e placas podem variar dependendo da estrutura do local)`
+        if (Number(Kwh.value) < 0){Placeholder1.innerHTML += "Favor, insira uma tarifa de energia válida."}
+        if (Number(area.value) <= 0){Placeholder1.innerHTML += "</br>Favor, insira uma área válida."} 
+        if (Number(qntdPintura.value) < 0){Placeholder1.innerHTML += "Insira uma quantidade de quadros válida."} 
+        else {
+            Placeholder1.innerHTML = `Seus gastos com restauros de quadros podem chegar a: R$${(Number(qntdPintura.value)* 1250).toFixed(2)} apenas com restaurações. Esse número pode ser muito maior se levar esculturas e escrituras em conta! Sem contar que existem danos sem a opção de reparos em quadros.`
+            Fonte.innerHTML = "Os valores das perdas acima vêm da média do custo de restaurações de quadros, que está entre R$500,00 e R$2000,00 para obras pequenas, segundo a revista Oeste Geral. Obras grandes podem vir a custar até 6 mil, segundo a gravuracontemporanea.com."
+            Placeholder2.innerHTML = `Nossos sensores vão custar: R$${Math.ceil((Number(qtdSensores) * 25) * 1.5 ).toFixed(2)}.</br> Você estará pagando R$${(25 * 1.5).toFixed(2)} por cada sensor e ${qtdSensores.toFixed(0)} serão instalados.</br> Serão necessárias ${placas.toFixed(0)} placas de controle (Arduino), o que será um gasto adicional de R$${Math.ceil((qtdSensores * 30) * 1.15)},00, custando R$${(30 * 1.15).toFixed(2)} por cada placa.
+            </br> E os custos para operar serão de R$${Math.ceil(custoEletrico)},00 por mês.</br> Vale ressaltar que esse custo pode mudar dependendo da frequência de medição; os valores usados são para medições de 4 em 4 horas.
+            </br> (A quantidade de sensores e placas pode variar dependendo da estrutura do local).`
+        }
     }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
