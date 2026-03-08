@@ -67,4 +67,68 @@ create table obra (
     check (sensibilidade_temperatura in ('baixa', 'media', 'alta'))
 );
 
- drop database thermus;
+insert into empresa (nome_empresa, cnpj, telefone, email, statusEmpresa)
+values 
+('museu nacional', '12345678000199', '11987654321', 'contato@museunacional.org', 'ativa'),
+('museu de arte moderna', '98765432000155', '11345678900', 'contato@mam.org', 'ativa');
+
+
+insert into ambiente (nomeambiente, andar, descricao)
+values
+('sala de exposicao 1', 1, 'sala principal de exposicao'),
+('sala de exposicao 2', 2, 'sala com obras modernas');
+
+
+insert into vitrine (codigo_vitrine, descricao)
+values
+('vit-01', 'vitrine com documentos historicos'),
+('vit-02', 'vitrine com esculturas');
+
+
+insert into sensor (tiposensor, localizacao, statussensor)
+values
+('dht11', 'vitrine vit-01', 'ativo'),
+('dht11', 'vitrine vit-02', 'ativo');
+
+
+insert into medicao (temperatura, umidade)
+values
+(21.5, 55.2),
+(22.1, 53.8),
+(20.9, 57.0);
+
+
+insert into alerta (tipoalerta, descricao)
+values
+('umidade alta', 'umidade proxima ao ponto de orvalho'),
+('temperatura baixa', 'risco de condensacao na vitrine');
+
+
+insert into usuario (nome, cargo, email, senha)
+values
+('ana silva', 'curadora', 'ana@museu.org', '123456'),
+('carlos souza', 'administrador', 'carlos@museu.org', '123456');
+
+
+insert into obra (titulo, artista, ano, material, sensibilidade_umidade, sensibilidade_temperatura)
+values
+('carta historica', 'autor desconhecido', 1850, 'papel', 'alta', 'media'),
+('escultura antiga', 'artista classico', 1700, 'bronze', 'baixa', 'media');
+
+
+select * from empresa;
+
+select * from ambiente;
+
+select * from sensor
+where statussensor = 'ativo';
+
+select 
+concat(titulo, ' - ', artista) as obra,
+material,
+case
+    when sensibilidade_umidade = 'alta' then 'controle ambiental critico'
+    when sensibilidade_umidade = 'media' then 'atencao moderada'
+    else 'baixo risco'
+end as nivel_monitoramento
+from obra;
