@@ -44,16 +44,17 @@ create table usuario (
     senha varchar(30) not null
 );
 
-create table empresa (
-    id_empresa int primary key auto_increment,
-    nome_empresa varchar(60) not null,
+create table instituto (
+    id_instituto int primary key auto_increment,
+    nome_instituto varchar(60) not null,
     cnpj char(14) not null unique,
     telefone varchar(15),
     email varchar(100),
-    statusEmpresa varchar(10) not null default 'ativa',
+    statusInstituto varchar(10) not null default 'ativa',
     data_cadastro datetime default current_timestamp,
-    check (statusEmpresa in ('ativa', 'inativa'))
+    check (statusInstituto in ('ativa', 'inativa'))
 );
+
 
 create table obra (
     id_obra int primary key auto_increment,
@@ -67,56 +68,47 @@ create table obra (
     check (sensibilidade_temperatura in ('baixa', 'media', 'alta'))
 );
 
-insert into empresa (nome_empresa, cnpj, telefone, email, statusEmpresa)
-values 
-('museu nacional', '12345678000199', '11987654321', 'contato@museunacional.org', 'ativa'),
-('museu de arte moderna', '98765432000155', '11345678900', 'contato@mam.org', 'ativa');
+insert into ambiente (nomeambiente, andar, descricao) values
+('Galeria Renascentista', 1, 'Ala norte com pé direito alto'),
+('Depósito de Acervo', 0, 'Subsolo com controle rigoroso de temperatura'),
+('Sala de Restauração', 2, 'Laboratório técnico');
+
+insert into  vitrine (codigo_vitrine, descricao) values
+('VIT-001', 'Vitrine de vidro temperado com vedação hermética'),
+('VIT-002', 'Expositor central aberto'),
+('VIT-003', 'Nichos de parede com iluminação LED fria');
+
+insert into sensor (tiposensor, localizacao, statussensor) values
+('DHT11', 'Parede Leste - Galeria 1', 'ativo'),
+('DHT22', 'Interno - Vitrine 001', 'ativo'),
+('LM35', 'Teto - Depósito', 'manutencao');
+
+insert into medicao (temperatura, umidade) values 
+(22.50, 45.00),
+(23.10, 48.50),
+(19.00, 40.00),
+(25.80, 60.00); 
+
+insert into alerta (tipoalerta, descricao) values
+('Umidade Alta', 'Nível de umidade excedeu 55% no Depósito'),
+('Oscilação Térmica', 'Variação brusca detectada na Vitrine 001');
+
+insert into usuario (nome, cargo, email, senha) values
+('Carlos Andrade', 'Curador', 'carlos@museu.com', 'Cura123#'),
+('Ana Souza', 'Técnica de Manutenção', 'ana.s@monitoramento.com', 'Mant456!'),
+('Marcos Silva', 'Administrador', 'admin@sistema.com', 'Sudo789$');
+
+insert into instituto (nome_instituto, cnpj, telefone, email) values 
+('Tech Guard Monitoramento', '12345678000199', '(11) 98888-7777', 'contato@techguard.com'),
+('Artes & Cia Exposição', '98765432000188', '(21) 3333-4444', 'logistica@artescia.com');
+
+insert into  obra (titulo, artista, ano, material, sensibilidade_umidade, sensibilidade_temperatura) values 
+('O Grito (Estudo)', 'Edvard Munch', 1893, 'Pastel sobre cartão', 'alta', 'alta'),
+('Estátua de Mármore', 'Desconhecido', 1550, 'Mármore Carrara', 'baixa', 'media'),
+('Manuscrito Antigo', 'Monge Beneditino', 1200, 'Pergaminho e Tinta Ferrogalica', 'alta', 'alta');
 
 
-insert into ambiente (nomeambiente, andar, descricao)
-values
-('sala de exposicao 1', 1, 'sala principal de exposicao'),
-('sala de exposicao 2', 2, 'sala com obras modernas');
-
-
-insert into vitrine (codigo_vitrine, descricao)
-values
-('vit-01', 'vitrine com documentos historicos'),
-('vit-02', 'vitrine com esculturas');
-
-
-insert into sensor (tiposensor, localizacao, statussensor)
-values
-('dht11', 'vitrine vit-01', 'ativo'),
-('dht11', 'vitrine vit-02', 'ativo');
-
-
-insert into medicao (temperatura, umidade)
-values
-(21.5, 55.2),
-(22.1, 53.8),
-(20.9, 57.0);
-
-
-insert into alerta (tipoalerta, descricao)
-values
-('umidade alta', 'umidade proxima ao ponto de orvalho'),
-('temperatura baixa', 'risco de condensacao na vitrine');
-
-
-insert into usuario (nome, cargo, email, senha)
-values
-('ana silva', 'curadora', 'ana@museu.org', '123456'),
-('carlos souza', 'administrador', 'carlos@museu.org', '123456');
-
-
-insert into obra (titulo, artista, ano, material, sensibilidade_umidade, sensibilidade_temperatura)
-values
-('carta historica', 'autor desconhecido', 1850, 'papel', 'alta', 'media'),
-('escultura antiga', 'artista classico', 1700, 'bronze', 'baixa', 'media');
-
-
-select * from empresa;
+select * from instituto;
 
 select * from ambiente;
 
@@ -132,3 +124,7 @@ case
     else 'baixo risco'
 end as nivel_monitoramento
 from obra;
+
+select * from medicao where temperatura > 25.00 or umidade > 50.00;
+
+
